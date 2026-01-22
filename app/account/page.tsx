@@ -23,6 +23,13 @@ export default function AccountPage() {
   useEffect(() => {
     async function loadAccount() {
       const supabase = createClient()
+
+      // If Supabase is not configured, redirect to login
+      if (!supabase) {
+        router.push('/login')
+        return
+      }
+
       const { data: { user } } = await supabase.auth.getUser()
 
       if (!user) {
@@ -82,7 +89,9 @@ export default function AccountPage() {
 
   const handleSignOut = async () => {
     const supabase = createClient()
-    await supabase.auth.signOut()
+    if (supabase) {
+      await supabase.auth.signOut()
+    }
     router.push('/')
   }
 

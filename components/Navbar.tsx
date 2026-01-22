@@ -14,6 +14,12 @@ export function Navbar() {
   useEffect(() => {
     const supabase = createClient()
 
+    // If Supabase is not configured, skip auth check
+    if (!supabase) {
+      setLoading(false)
+      return
+    }
+
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
       setLoading(false)

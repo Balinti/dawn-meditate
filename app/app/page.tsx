@@ -59,10 +59,12 @@ export default function AppPage() {
   useEffect(() => {
     const supabase = createClient()
 
-    // Check auth
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setIsLoggedIn(!!user)
-    })
+    // Check auth (only if Supabase is configured)
+    if (supabase) {
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        setIsLoggedIn(!!user)
+      })
+    }
 
     // Check entitlement
     fetch('/api/entitlement')
